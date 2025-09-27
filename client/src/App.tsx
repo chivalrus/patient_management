@@ -1,6 +1,7 @@
 import './App.css'
 import { gql } from '@apollo/client';
 import { useQuery } from '@apollo/client/react';
+import { Button } from "@/components/ui/button"
 
 type Patient = {
   id?: string;
@@ -54,6 +55,7 @@ function App() {
       <h1>Filtered</h1>
       <div>
         <p>{dataById?.getPatientById?.name}</p>
+        <Button>Click me</Button>
       </div>
 
       <h1 className='text-red-500'>Patients</h1>
