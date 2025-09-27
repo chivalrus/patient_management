@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { gql } from "@apollo/client";
 import { useMutation } from "@apollo/client/react";
 import type { Patient } from "./tally/patients/columns";
-import {  useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 const REGISTER_PATIENT = gql`
@@ -27,15 +27,19 @@ interface IRegisterPatient {
   registerPatient: Patient;
 }
 
-export const RegistrationForm = () => {
+export const RegistrationForm = ({ ...props }: { setRegistered: (e:boolean) => void }) => {
   const [newPatient, setNewPatient] = useState<Patient>({} as Patient);
 
-  const [registerPatient, { data }] = useMutation<IRegisterPatient>(REGISTER_PATIENT);
+  const [registerPatient, { data }] =
+    useMutation<IRegisterPatient>(REGISTER_PATIENT);
 
   const handleRegisterPatient = async () => {
     try {
-      await registerPatient({variables: {...newPatient}});
-      toast.success(`Successfully registered ${data?.registerPatient?.name || ""}`);
+      await registerPatient({ variables: { ...newPatient } });
+      toast.success(
+        `Successfully registered ${data?.registerPatient?.name || ""}`
+      );
+      props.setRegistered(true);
 
       setNewPatient(() => ({} as Patient));
     } catch (err: unknown) {
@@ -44,9 +48,8 @@ export const RegistrationForm = () => {
       if (err instanceof Error) {
         errorMessage = err.message;
       }
-      
+
       toast.error(errorMessage);
-      
     }
   };
 
@@ -89,7 +92,11 @@ export const RegistrationForm = () => {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="email">Age</Label>
-              <Input id="name" type="number" placeholder="age" required 
+              <Input
+                id="name"
+                type="number"
+                placeholder="age"
+                required
                 onChange={(e) => {
                   setNewPatient((old) => {
                     return { ...old, age: parseInt(e.target.value) };
@@ -101,7 +108,11 @@ export const RegistrationForm = () => {
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full" onClick={handleRegisterPatient}>
+        <Button
+          type="submit"
+          className="w-full"
+          onClick={handleRegisterPatient}
+        >
           Register
         </Button>
       </CardFooter>

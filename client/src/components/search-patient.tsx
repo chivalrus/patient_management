@@ -20,8 +20,8 @@ const GET_PATIENTS = gql`
   }
 `;
 
-export const SearchPatient = () => {
-  const [getData, { loading, error, data }] = useLazyQuery<IGetPatients>(GET_PATIENTS);
+export const SearchPatient = ({...props} : {newRegistered: boolean}) => {
+  const [getData, { loading, error, data }] = useLazyQuery<IGetPatients>(GET_PATIENTS, { fetchPolicy: 'network-only' });
 
   const [patients, setPatients] = useState<Patient[]>([]);
 
@@ -29,6 +29,13 @@ export const SearchPatient = () => {
     const patientList = (data?.getPatients || []) as Patient[];
     setPatients(() => [...patientList]);
   }, [data]);
+
+  useEffect(() => {
+    if (props.newRegistered === true) {
+      getData();
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.newRegistered]);
 
   if (error) toast.error(error.message);
 

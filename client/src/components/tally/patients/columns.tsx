@@ -29,7 +29,7 @@ export const columns: ColumnDef<Patient>[] = [
         <Button
           className="bg-transparent! hover:border-none"
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          onClick={() => column.toggleSorting()}
         >
           Name
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -44,7 +44,7 @@ export const columns: ColumnDef<Patient>[] = [
         <Button
           className="bg-transparent! hover:border-none"
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "desc")}
+          onClick={() => column.toggleSorting()}
         >
           Age
           <ArrowUpDown className="ml-2 h-4 w-4" />
