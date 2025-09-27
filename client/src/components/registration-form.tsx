@@ -68,6 +68,7 @@ export const RegistrationForm = ({ ...props }: { setRegistered: (e:boolean) => v
                 id="email"
                 type="email"
                 placeholder="m@example.com"
+                value={newPatient?.email || ""}
                 required
                 onChange={(e) => {
                   setNewPatient((old) => {
@@ -81,7 +82,8 @@ export const RegistrationForm = ({ ...props }: { setRegistered: (e:boolean) => v
               <Input
                 id="name"
                 type="name"
-                placeholder="john"
+                placeholder="john doe"
+                value={newPatient?.name || ""}
                 required
                 onChange={(e) => {
                   setNewPatient((old) => {
@@ -96,6 +98,7 @@ export const RegistrationForm = ({ ...props }: { setRegistered: (e:boolean) => v
                 id="name"
                 type="number"
                 placeholder="age"
+                value={newPatient?.age || ""}
                 required
                 onChange={(e) => {
                   setNewPatient((old) => {

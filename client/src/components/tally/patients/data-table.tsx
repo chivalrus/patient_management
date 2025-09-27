@@ -132,6 +132,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
+        {table.getPageCount() > 0 && <span>{table.getState().pagination.pageIndex+1} of {table.getPageCount()}</span>}
         <Button
           className="text-white"
           variant="outline"

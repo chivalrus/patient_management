@@ -11,7 +11,7 @@ const Home = () => {
                 <RegistrationForm setRegistered={setRegistered}/>
             </div>
             <div className="col-span-8 min-h-[485px]">
-                <SearchPatient newRegistered={registered}/>
+                <SearchPatient newRegistered={registered} setNewRegistered={setRegistered}/>
             </div>
         </div>
     );
