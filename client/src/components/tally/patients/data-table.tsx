@@ -27,14 +27,23 @@ import { useState } from "react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  paginate: { pageIndex: number, pageSize: number};
 }
 
 export function DataTable<TData, TValue>({
   columns,
-  data
+  data,
+  paginate
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [pagination, setPagination] = useState(paginate);
+
+  // useEffect(() => {
+  //   console.log({index: table.getState().pagination.pageIndex});
+  //   // refetchData(pagination);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [pagination]);
 
   const table = useReactTable({
     data: [...data],
@@ -46,20 +55,22 @@ export function DataTable<TData, TValue>({
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     state: {
+      pagination,
       sorting,
       columnFilters,
     },
     autoResetPageIndex: false,
     initialState: {
-      pagination: {pageSize: 5, pageIndex: 0}
-    }
+      pagination
+    },
+    onPaginationChange: setPagination
   });
 
   return (
     <div>
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter emails..."
+          placeholder="Filter name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

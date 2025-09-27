@@ -1,8 +1,8 @@
 import { DataTable } from "./tally/patients/data-table";
 import { columns, type Patient } from "./tally/patients/columns";
 import { gql } from "@apollo/client";
-import {  useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client/react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface IGetPatients {
@@ -21,7 +21,8 @@ const GET_PATIENTS = gql`
 `;
 
 export const SearchPatient = () => {
-  const { data, refetch, error, loading } = useQuery<IGetPatients>(GET_PATIENTS)
+  const [getData, { loading, error, data }] = useLazyQuery<IGetPatients>(GET_PATIENTS);
+
   const [patients, setPatients] = useState<Patient[]>([]);
 
   useEffect(() => {
@@ -31,14 +32,20 @@ export const SearchPatient = () => {
 
   if (error) toast.error(error.message);
 
+  const paginateRef = useRef({
+    pageIndex: 0, pageSize: 5
+  })
+
+
   return (
     <div className="container mx-auto py-10">
-      <button className="text-white" onClick={() => refetch()}>
+      <button className="text-white" onClick={() => getData()}>
         Search
       </button>
 
       {!loading && (
-        <DataTable key={"search"} columns={columns} data={[...patients]} />
+        <DataTable key={"search"} columns={columns} data={[...patients]}
+          paginate={paginateRef.current}/>
       )}
     </div>
   );
